@@ -1,0 +1,31 @@
+body {
+  background-image: url('./assets/mart.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  background-repeat: no-repeat;
+}
+
+/* For small screens */
+@media (max-width: 300px) {
+  body {
+    background-size: contain; /* Ensures the image is contained within the screen */
+    background-position: top; /* Aligns the image to the top */
+  }
+}
+
+/* For medium screens */
+@media (min-width: 769px) and (max-width: 1024px) {
+  body {
+    background-size: cover;
+    background-position: center; /* Centers the image for medium screens */
+  }
+}
+
+/* For large screens */
+@media (min-width: 1025px) {
+  body {
+    background-size: cover; /* Keeps the full background cover on larger screens */
+    background-position: center;
+  }
+}
