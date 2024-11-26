@@ -58,7 +58,7 @@ const AddTask = () => {
             <option value="Shopping">Shopping</option>
             <option value="Travelling">Travelling</option>
             <option value="Grocery">Grocery</option>
-            <option value="Bills">Bills</option>
+            <option value="Bills">Bills</option>    
           </select>
         </div>
 
