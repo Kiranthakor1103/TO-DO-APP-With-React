@@ -1,34 +1,51 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { addTask } from '../features/taskSlice'; 
+import { addTask } from '../features/taskSlice';
 
 const AddTask = () => {
   const [newTask, setNewTask] = useState('');
-  const [taskType, setTaskType] = useState('');
+  const [category, setCategory] = useState('');
+  const [customCategory, setCustomCategory] = useState('');
+  const [categories, setCategories] = useState(['Shopping', 'Travelling']);
   const dispatch = useDispatch();
 
   const handleNewTaskChange = (e) => {
     setNewTask(e.target.value);
   };
-  
-  const handleTaskTypeChange = (e) => {
-    setTaskType(e.target.value);
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
   };
-  
+
+  const handleCustomCategoryChange = (e) => {
+    setCustomCategory(e.target.value);
+  };
+
+  const addCustomCategory = () => {
+    if (customCategory.trim() && !categories.includes(customCategory)) {
+      setCategories([...categories, customCategory]);
+      setCategory(customCategory); // Automatically set the new category
+      setCustomCategory(''); // Clear the custom category input
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (newTask.trim()) {
+    if (newTask.trim() && category) {
       const newAddTask = {
         id: uuidv4(),
         text: newTask,
-        taskType,
+        category,
         done: false,
       };
+
+      // Dispatch action to Redux
       dispatch(addTask(newAddTask));
-      setNewTask(''); // clear the task field 
-      setTaskType(''); // clear the task type
+
+      // Clear the form
+      setNewTask('');
+      setCategory('');
     }
   };
 
@@ -48,18 +65,35 @@ const AddTask = () => {
           />
 
           <select
-            value={taskType}
-            onChange={handleTaskTypeChange}
+            value={category}
+            onChange={handleCategoryChange}
             required
             className="w-full p-3 text-gray-900 rounded-lg shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
           >
             <option value="">Task Category</option>
-            <option value="Office">Office</option>
-            <option value="Shopping">Shopping</option>
-            <option value="Travelling">Travelling</option>
-            <option value="Grocery">Grocery</option>
-            <option value="Bills">Bills</option>    
+            {categories.map((cat, index) => (
+              <option key={index} value={cat}>
+                {cat}
+              </option>
+            ))}
           </select>
+
+          <div className="flex items-center space-x-4">
+            <input
+              type="text"
+              placeholder="Add Custom Category"
+              value={customCategory}
+              onChange={handleCustomCategoryChange}
+              className="w-full p-3 text-gray-900 rounded-lg shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <button
+              type="button"
+              onClick={addCustomCategory}
+              className="py-3 px-6 bg-white text-purple-600 font-bold rounded-lg shadow-md hover:bg-gray-100 transition duration-200"
+            >
+              Add Category
+            </button>
+          </div>
         </div>
 
         <button
